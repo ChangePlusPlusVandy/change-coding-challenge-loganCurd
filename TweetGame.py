@@ -1,3 +1,16 @@
+"""
+Logan Curd
+logan.r.curd@vanderbilt.edu
+09/25/2020
+TweetGame.py - guess tweets from two users
+Change++ Application
+
+Notes: I could not get the endpoint to return 3200 tweets for each handle,
+       but it does return enough to play the game
+
+To Run: Should just be able to type py TweetGame.py into the terminal - at least for Windows
+"""
+
 import requests
 import random
 import sys
@@ -38,6 +51,9 @@ class TweetGame:
     def add_tweets(self):
         tweets = []
 
+        if self.handle1 == self.handle2:
+            sys.exit("Error: handles can not be the same")
+
         self.get_tweets(self.handle1, tweets)
         self.get_tweets(self.handle2, tweets)
 
@@ -46,6 +62,7 @@ class TweetGame:
     # get_tweets(): performs API call for handle and finds valid tweets to append into tweet_list
     # params: handle = twitter handle of user, tweet_list = list to append Tweet objects to
     def get_tweets(self, handle, tweet_list):
+
         params = {'screen_name': handle, 'include_rts': INCLUDE_RTS, 'count': TWEET_RETURN_COUNT}
         header = {'authorization': 'Bearer ' + BEARER_TOKEN}
 
@@ -103,11 +120,11 @@ class TweetGame:
             self.play_round()
             play_again = self.play_again()
 
-        print("Game Over: You played", self.rounds_played, "round(s)", "and had", self.score, "correct answer(s)")
+        print("Game Over: You played ", self.rounds_played, " round(s) and had ", self.score, " correct answer(s)")
 
 
 def main():
-    print("Input two twitter handles (do not include /'@/' symbol)")
+    print("Input two twitter handles (do not include \'@\' symbol)")
     handle1 = input("Input handle 1 (ex: kanyewest): ")
     handle2 = input("Input handle 2 (ex: elonmusk): ")
     game = TweetGame(handle1, handle2)
